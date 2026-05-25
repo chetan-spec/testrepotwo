@@ -1,29 +1,29 @@
- name : build and push to docker hub 
+name: Build and Push to Docker Hub
 
- on : 
-   push: 
-     branches: 
-       - main
- workflow_dispatch:
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
- env:
-   Image-name : {{ secrets.DOCKER_USERNAME }}/my-app:latest 
- jobs:
-    build-and-push:
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/my-app
+
+jobs:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
-     - name : checout in repo
-       uses : actions/checkout@v2
-       -name : login into dockerhub
-        uses: docker/login-action@v1
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-           username:{{ secrets.DOCKER_USERNAME }}
-           password:{{ secrets.DOCKER_TOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: build image
-         run: docker build -t $ {{ env.Image-name }}:latest .
-      - name: push image
-        run: docker push ${{ env.Image-name }}:latest
+      - name: Build image
+        run: docker build -t ${{ env.IMAGE_NAME }}:latest .
 
-    
-   
+      - name: Push image
+        run: docker push ${{ env.IMAGE_NAME }}:latest
