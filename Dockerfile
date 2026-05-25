@@ -4,11 +4,14 @@ RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
 
 WORKDIR /usr/src/node-app
 
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
+
+# Install Yarn
+RUN npm install -g yarn
 
 USER node
 
-RUN npm install
+RUN yarn install --frozen-lockfile
 
 COPY --chown=node:node . .
 
