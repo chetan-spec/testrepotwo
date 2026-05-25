@@ -8,7 +8,7 @@ COPY package.json yarn.lock ./
 
 USER node
 
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
 COPY --chown=node:node . .
 
